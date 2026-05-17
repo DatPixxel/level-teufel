@@ -254,6 +254,7 @@ namespace Sherlock.Merge
 
             PlaySfx(mergeSfx);
             SpawnMergeParticles(targetCell.transform.position);
+            Core.MobileSetup.VibrateShort();
 
             _draggedItem = null;
             OnMergeCompleted?.Invoke(resultData);

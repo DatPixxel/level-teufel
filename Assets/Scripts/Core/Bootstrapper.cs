@@ -25,6 +25,7 @@ namespace Sherlock.Core
         [SerializeField] private GameObject audioManagerPrefab;
         [SerializeField] private GameObject iapManagerPrefab;
         [SerializeField] private GameObject leaderboardPrefab;
+        [SerializeField] private GameObject backButtonHandlerPrefab;
 
         [Header("First scene to load after bootstrap")]
         [SerializeField] private string firstScene = "MainMenu";
@@ -39,11 +40,12 @@ namespace Sherlock.Core
             LoadProgress = 0f;
 
             // ── Instantiate persistent singletons ─────────────────────────────
-            SpawnIfMissing<GameState>(gameStatePrefab,     "GameState");
-            SpawnIfMissing<Data.ItemDatabase>(itemDatabasePrefab, "ItemDatabase");
-            SpawnIfMissing<AudioManager>(audioManagerPrefab, "AudioManager");
-            SpawnIfMissing<IAPManager>(iapManagerPrefab,   "IAPManager");
-            SpawnIfMissing<LeaderboardService>(leaderboardPrefab, "LeaderboardService");
+            SpawnIfMissing<GameState>(gameStatePrefab,          "GameState");
+            SpawnIfMissing<Data.ItemDatabase>(itemDatabasePrefab,    "ItemDatabase");
+            SpawnIfMissing<AudioManager>(audioManagerPrefab,    "AudioManager");
+            SpawnIfMissing<IAPManager>(iapManagerPrefab,        "IAPManager");
+            SpawnIfMissing<LeaderboardService>(leaderboardPrefab,    "LeaderboardService");
+            SpawnIfMissing<BackButtonHandler>(backButtonHandlerPrefab, "BackButtonHandler");
 
             LoadProgress = 0.3f;
             yield return null;   // let Awake() calls complete
@@ -56,12 +58,7 @@ namespace Sherlock.Core
             yield return null;
 
             // ── Platform setup ────────────────────────────────────────────────
-            Application.targetFrameRate = 60;
-            Screen.sleepTimeout         = SleepTimeout.NeverSleep;
-
-#if UNITY_IOS || UNITY_ANDROID
-            Input.multiTouchEnabled = true;
-#endif
+            MobileSetup.Apply();
 
             LoadProgress = 0.9f;
             yield return null;

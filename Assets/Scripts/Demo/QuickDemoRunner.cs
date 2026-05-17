@@ -6,21 +6,22 @@ using UnityEngine.UI;
 namespace Sherlock.Demo
 {
     /// <summary>
-    /// QuickDemoRunner — ANFÄNGER-EINSTIEG
+    /// QuickDemoRunner — ANFÄNGER-EINSTIEG (Android &amp; iOS ready)
     ///
     /// Dieses Script erstellt ALLES selbst:
     ///   • Ein 5×6 Merge-Board aus farbigen Feldern
-    ///   • Drag-and-Drop zwischen Feldern
+    ///   • Klick / Tap zum Auswählen und Verschieben
     ///   • Merge-Logik (zwei gleiche → nächste Stufe)
     ///   • "Objekt finden" Button (simuliert Hidden Object Szene)
     ///   • Münz-Anzeige, Verkaufen-Funktion
+    ///   • Haptisches Feedback beim Merge (Android + iOS)
     ///
     /// Wie benutzen:
-    ///   1. Neues Unity 2D Projekt erstellen
+    ///   1. Neues Unity 2D Projekt erstellen (Android Build Support installiert)
     ///   2. Alle Scripts in Assets/Scripts/ kopieren
     ///   3. Leere Szene öffnen
     ///   4. Leeres GameObject erstellen → dieses Script anhängen
-    ///   5. Play drücken → fertig!
+    ///   5. Play drücken → fertig! (auch auf Handy direkt testbar)
     /// </summary>
     public class QuickDemoRunner : MonoBehaviour
     {
@@ -305,6 +306,7 @@ namespace Sherlock.Demo
             to.Place(result);
 
             StartCoroutine(FlashCell(to));
+            Core.MobileSetup.VibrateShort();
             SetStatus($"✓ Kombiniert zu: {result.Name} (Stufe {result.Tier})!");
 
             if (result.Tier == Items.Length)

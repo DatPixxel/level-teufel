@@ -1,111 +1,196 @@
 # Schritt-für-Schritt Setup — Für Anfänger
+## Android & iOS — beide Plattformen
 
-Ziel: In 10 Minuten das Merge-Board spielbar sehen.
+Ziel: In 15 Minuten das Merge-Board spielbar sehen — zuerst am PC, dann aufs Handy.
 
 ---
 
-## Schritt 1 — Unity Projekt erstellen
+## Teil 1 — Unity Projekt erstellen
+
+### Schritt 1 — Unity Hub öffnen
 
 1. **Unity Hub** öffnen
-2. Klick auf **"New project"**
-3. Template wählen: **"2D (Core)"**
-4. Name: `SherlockMerge`
-5. Klick **"Create project"**
+2. Links auf **"Installs"** klicken
+3. Prüfen ob du diese **Modules** installiert hast:
+   - ✅ **Android Build Support** (für Android-Handys)
+   - ✅ **Android SDK & NDK Tools** (kommt automatisch mit Android Build Support)
+   - ✅ **iOS Build Support** (für iPhone/iPad — nur auf Mac möglich!)
+
+> Falls nicht: Klick auf das Zahnrad neben deiner Unity-Version → "Add Modules"
+
+### Schritt 2 — Neues Projekt
+
+1. Klick auf **"New project"**
+2. Template wählen: **"2D (Core)"**
+3. Name: `SherlockMerge`
+4. Klick **"Create project"**
 
 > Warte bis Unity fertig geladen hat (~1–2 Minuten)
 
 ---
 
-## Schritt 2 — Scripts ins Projekt kopieren
+## Teil 2 — Scripts ins Projekt kopieren
+
+### Schritt 3
 
 1. Im Windows Explorer / Finder: gehe in den Ordner wo dieses Repository liegt
-2. Kopiere den ganzen Ordner **`Assets/`** in deinen Unity-Projekt-Ordner
-   (ersetze den vorhandenen Assets-Ordner)
+2. Kopiere diese Ordner in deinen Unity-Projekt `Assets/` Ordner:
+   ```
+   Assets/Scripts/     → komplett kopieren
+   Assets/Plugins/     → komplett kopieren (enthält AndroidManifest.xml)
+   Assets/Editor/      → komplett kopieren
+   ```
 3. Zurück in Unity: Unity erkennt die neuen Scripts automatisch
    - Unten rechts siehst du einen Ladebalken — warte bis er fertig ist
-   - Falls rote Fehlermeldungen erscheinen → **Schritt 3 lesen**
 
----
-
-## Schritt 3 — Falls Fehler erscheinen (häufig bei Anfängern)
+### Schritt 4 — Fehler beheben (nur beim ersten Mal)
 
 Unity zeigt vielleicht diesen Fehler:
 ```
-The type or namespace name 'IDetailedStoreListener' could not be found
+The type 'IDetailedStoreListener' could not be found
 ```
 
-**Lösung:** Die Datei `IAPManagerFull.cs` braucht ein Extra-Paket.
-Ignoriere sie vorerst einfach:
+**Lösung:** Die Datei `IAPManagerFull.cs` braucht ein Extra-Paket (Unity IAP).
+Für den Anfang einfach löschen:
 
-1. Im Project-Fenster: `Assets > Scripts > Meta > IAPManagerFull.cs` suchen
-2. Rechtsklick → **Delete**
-3. Bestätige mit "Delete"
-4. Fehler sollten verschwinden
-
----
-
-## Schritt 4 — Demo-Szene öffnen
-
-1. Oben in Unity: Menü **File → New Scene**
-2. Wähle **"Basic (Built-in)"** → Klick Create
-3. Im **Hierarchy-Fenster** (links): Rechtsklick → **"Create Empty"**
-4. Das neue Objekt heißt "GameObject" — umbennen zu `DemoRunner`
-5. Das Objekt ist noch ausgewählt → rechts im **Inspector-Fenster**:
-   - Klick auf **"Add Component"**
-   - Tippe: `QuickDemoRunner`
-   - Klick auf den Treffer in der Liste
+1. Im Project-Fenster: `Assets/Scripts/Meta/IAPManagerFull.cs` suchen
+2. Rechtsklick → **Delete** → Bestätigen
+3. Fehler verschwinden automatisch
 
 ---
 
-## Schritt 5 — Play drücken!
+## Teil 3 — Demo starten (am PC)
 
-1. Klick auf den **▶ Play-Button** oben in der Mitte
-2. Du siehst jetzt das Merge-Board!
+### Schritt 5 — Demo-Szene einrichten
+
+1. Oben in Unity: Menü **File → New Scene → Basic (Built-in) → Create**
+2. Im **Hierarchy-Fenster** (links): Rechtsklick → **"Create Empty"**
+3. Umbenennen zu `DemoRunner`
+4. Rechts im **Inspector**: Klick **"Add Component"** → tippe `QuickDemoRunner` → auswählen
+
+### Schritt 6 — Play drücken!
+
+Klick auf den **▶ Play-Button** oben.
+
+Du siehst jetzt das Merge-Board! Klick auf farbige Felder um Items zu bewegen und zu kombinieren.
 
 ---
 
-## Was du in der Demo machen kannst
+## Teil 4 — Aufs Android-Handy bringen
 
-| Aktion | Wie |
-|---|---|
-| Item auswählen | Auf ein gefülltes Feld klicken (wird gelb markiert) |
-| Item verschieben | Danach auf ein leeres Feld klicken |
-| Zwei Items kombinieren | Zwei gleiche Items wählen → klick auf das zweite |
-| Neues Item finden | Klick auf **"Objekt finden"** Button |
-| Item verkaufen | Item auswählen → Klick **"Ausgewähltes verkaufen"** |
+> Das ist der wichtigste Schritt — so testest du wie es sich auf dem echten Gerät anfühlt!
 
-### Die Merge-Kette (probiere es aus!):
+### Schritt 7 — Android am PC aktivieren
+
+**Auf deinem Android-Handy:**
+1. **Einstellungen** öffnen
+2. Ganz unten: **"Über das Telefon"**
+3. Auf **"Build-Nummer"** 7× tippen
+4. Zurück → **"Entwickleroptionen"** → **"USB-Debugging"** einschalten
+
+**Handy per USB mit dem PC verbinden:**
+- Es erscheint ein Dialog auf dem Handy → **"Zulassen"** tippen
+
+### Schritt 8 — In Unity auf Android umstellen
+
+1. Menü **File → Build Settings**
+2. Links auf **"Android"** klicken
+3. Klick **"Switch Platform"** (dauert 1–2 Minuten)
+4. Klick **"Player Settings..."** (unten links)
+
+Im Inspector rechts:
+- **Company Name**: Dein Name (z.B. `MeinStudio`)
+- **Product Name**: `Sherlock Merge`
+- **Package Name**: `com.meinstudio.sherlockmerge`
+- **Minimum API Level**: `Android 7.0 'Nougat' (API level 24)`
+- **Target API Level**: `Automatic (highest installed)`
+
+### Schritt 9 — Direkt aufs Handy bauen
+
+Zurück in **Build Settings**:
+1. Dein Handy sollte unter **"Run Device"** erscheinen
+2. Klick **"Build And Run"**
+3. Speicherort wählen → **"Save"**
+
+Unity baut die App (~2–5 Minuten) und installiert sie direkt auf deinem Handy!
+
+---
+
+## Teil 5 — Aufs iPhone bringen (nur auf Mac!)
+
+> Für iOS brauchst du zwingend einen Mac mit Xcode. Auf Windows ist iOS-Build nicht möglich.
+
+### Schritt 10 — Xcode installieren
+
+1. Mac App Store öffnen → **Xcode** suchen → installieren (groß, ~15 GB)
+2. Xcode einmal öffnen → Lizenz akzeptieren
+
+### Schritt 11 — Apple Developer Account
+
+1. Gehe zu [developer.apple.com](https://developer.apple.com)
+2. Registriere dich (kostenlos für Testen auf eigenem Gerät)
+3. Für App Store Veröffentlichung: **99 $/Jahr** Apple Developer Program
+
+### Schritt 12 — iOS Build in Unity
+
+1. **File → Build Settings → iOS → Switch Platform**
+2. **Player Settings**:
+   - **Bundle Identifier**: `com.meinstudio.sherlockmerge`
+   - **Target minimum iOS Version**: `16.0`
+3. **Build** → Ordner wählen → Unity erstellt ein Xcode-Projekt
+4. Xcode-Projekt öffnen → iPhone anschließen → **▶ Run**
+
+---
+
+## Interaktions-Referenz (Demo)
+
+| Aktion | PC | Handy |
+|---|---|---|
+| Item auswählen | Linksklick auf Feld | Einmal tippen |
+| Item verschieben | Auswählen → Ziel klicken | Tippen → Ziel tippen |
+| Merge | Zwei gleiche auswählen | Zwei gleiche antippen |
+| Neues Item | "Objekt finden" Button | Button tippen |
+| Verkaufen | Auswählen → "Verkaufen" | Tippen → Button |
+
+### Merge-Kette:
 ```
 Stufe 1: Schnipsel  +  Schnipsel  →  Stufe 2: Brief
 Stufe 2: Brief      +  Brief      →  Stufe 3: Dokument
 Stufe 3: Dokument   +  Dokument   →  Stufe 4: Nachricht
-Stufe 4: Nachricht  +  Nachricht  →  Stufe 5: Forensik-Kit  ★
+Stufe 4: Nachricht  +  Nachricht  →  Stufe 5: Forensik-Kit ★
 ```
 
 ---
 
-## Schritt 6 — Wenn du bereit bist (nächste Stufe)
+## Was ist schon Mobile-ready in diesem Projekt?
 
-Wenn das Demo läuft und du es verstanden hast, kannst du:
-
-1. **Echte Szene aufbauen** → Menü `Sherlock → Seed Chapter 1 Data` ausführen
-   *(erstellt alle Gegenstände als Assets)*
-2. **Hintergrundbilder** für die Hidden-Object-Szenen hinzufügen
-3. **Sounds** im AudioManager zuweisen
+| Feature | Status |
+|---|---|
+| Touch-Steuerung (Tippen, Ziehen) | ✅ Fertig |
+| Pinch-to-Zoom (Hidden Object Szenen) | ✅ Fertig |
+| Safe Area (Notch, Punch-Hole) | ✅ Fertig (`SafeAreaPanel.cs`) |
+| Android Zurück-Button | ✅ Fertig (`BackButtonHandler.cs`) |
+| Canvas-Skalierung für alle Bildschirme | ✅ Fertig (`MobileCanvasSetup.cs`) |
+| Haptisches Feedback beim Merge | ✅ Fertig (Android + iOS) |
+| Android Manifest | ✅ Fertig (`Plugins/Android/`) |
+| Speicherung (Spielstand) | ✅ Fertig (funktioniert auf beiden Plattformen) |
+| In-App-Käufe (Stub) | ⚠️ Stub — braucht Unity IAP Paket |
+| App Store / Google Play Upload | ⬜ Nächster Schritt |
 
 ---
 
-## Häufige Fragen
+## Häufige Fehler
 
-**F: Unity friert ein wenn ich Play drücke**
-→ Warte einfach 10–30 Sekunden beim ersten Mal. Danach ist es schneller.
+**"Android SDK not found"**
+→ Unity Hub → Installs → Zahnrad → Add Modules → Android Build Support installieren
 
-**F: Der Bildschirm ist schwarz**
-→ Stelle sicher dass `DemoRunner` ausgewählt ist und `QuickDemoRunner` im Inspector steht
+**"Handy wird nicht erkannt"**
+→ USB-Debugging aktivieren (Schritt 7) + anderes USB-Kabel probieren
 
-**F: Ich sehe nur einen blauen Hintergrund**
-→ Klick oben auf **"Game"** (nicht "Scene") Tab um die Spielansicht zu sehen
+**"Build failed: Package name invalid"**
+→ Package Name darf keine Leerzeichen und keine Großbuchstaben haben:
+  ✅ `com.meinstudio.sherlockmerge`
+  ❌ `com.Mein Studio.SherlockMerge`
 
-**F: Fehlermeldung "LegacyRuntime.ttf not found"**
-→ Du benutzt eine sehr neue Unity-Version. Gehe in `QuickDemoRunner.cs` und ersetze
-  `"LegacyRuntime.ttf"` durch `"Arial.ttf"` an allen Stellen.
+**"LegacyRuntime.ttf not found"**
+→ In `QuickDemoRunner.cs` alle `"LegacyRuntime.ttf"` durch `"Arial.ttf"` ersetzen
