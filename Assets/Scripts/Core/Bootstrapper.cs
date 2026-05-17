@@ -1,4 +1,6 @@
 using System.Collections;
+using Sherlock.Ads;
+using Sherlock.Analytics;
 using Sherlock.Meta;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -26,6 +28,10 @@ namespace Sherlock.Core
         [SerializeField] private GameObject iapManagerPrefab;
         [SerializeField] private GameObject leaderboardPrefab;
         [SerializeField] private GameObject backButtonHandlerPrefab;
+        [SerializeField] private GameObject adsManagerPrefab;
+        [SerializeField] private GameObject analyticsManagerPrefab;
+        [SerializeField] private GameObject notificationManagerPrefab;
+        [SerializeField] private GameObject dailyRewardPrefab;
 
         [Header("First scene to load after bootstrap")]
         [SerializeField] private string firstScene = "MainMenu";
@@ -45,7 +51,11 @@ namespace Sherlock.Core
             SpawnIfMissing<AudioManager>(audioManagerPrefab,    "AudioManager");
             SpawnIfMissing<IAPManager>(iapManagerPrefab,        "IAPManager");
             SpawnIfMissing<LeaderboardService>(leaderboardPrefab,    "LeaderboardService");
-            SpawnIfMissing<BackButtonHandler>(backButtonHandlerPrefab, "BackButtonHandler");
+            SpawnIfMissing<BackButtonHandler>(backButtonHandlerPrefab,     "BackButtonHandler");
+            SpawnIfMissing<AdsManager>(adsManagerPrefab,                  "AdsManager");
+            SpawnIfMissing<AnalyticsManager>(analyticsManagerPrefab,      "AnalyticsManager");
+            SpawnIfMissing<LocalNotificationManager>(notificationManagerPrefab, "NotificationManager");
+            SpawnIfMissing<DailyRewardSystem>(dailyRewardPrefab,          "DailyRewardSystem");
 
             LoadProgress = 0.3f;
             yield return null;   // let Awake() calls complete
