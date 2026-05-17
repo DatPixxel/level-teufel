@@ -27,8 +27,23 @@ namespace Sherlock.Merge
 
         public void Init(ItemData data)
         {
-            Data      = data;
-            _sr.sprite = data.icon;
+            Data = data;
+
+            // Priorität: 1. Icon direkt im ScriptableObject
+            //            2. SpriteManager (aus Resources/Sprites/Items/)
+            //            3. Prozeduraler Placeholder
+            if (data.icon != null)
+            {
+                _sr.sprite = data.icon;
+            }
+            else if (UI.SpriteManager.Instance != null)
+            {
+                _sr.sprite = UI.SpriteManager.Instance.GetItemSprite(data.itemId);
+            }
+            else
+            {
+                _sr.sprite = UI.PlaceholderSpriteGenerator.GenerateItemSprite(data.itemId, data.tier);
+            }
         }
 
         // ── IPointer handlers ─────────────────────────────────────────────────
