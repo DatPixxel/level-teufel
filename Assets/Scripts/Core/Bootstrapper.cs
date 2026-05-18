@@ -83,7 +83,7 @@ namespace Sherlock.Core
 
         static void SpawnIfMissing<T>(GameObject prefab, string fallbackName) where T : MonoBehaviour
         {
-            if (FindObjectOfType<T>() != null) return; // already exists (domain reload)
+            if (Unity6Compat.FindFirst<T>() != null) return; // already exists (domain reload)
 
             GameObject go;
             if (prefab != null)

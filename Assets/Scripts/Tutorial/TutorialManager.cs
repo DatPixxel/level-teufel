@@ -177,7 +177,7 @@ namespace Sherlock.Tutorial
 
         Vector2 FindButtonPosition(string nameContains)
         {
-            foreach (var btn in FindObjectsOfType<Button>())
+            foreach (var btn in Core.Unity6Compat.FindAll<Button>())
                 if (btn.name.Contains(nameContains))
                     return WorldToCanvasPos(btn.transform.position);
             return Vector2.zero;
@@ -185,14 +185,14 @@ namespace Sherlock.Tutorial
 
         Vector2 FindFirstBoardItem()
         {
-            var item = FindObjectOfType<Merge.MergeItem>();
+            var item = Core.Unity6Compat.FindFirst<Merge.MergeItem>();
             if (item == null) return Vector2.zero;
             return WorldToCanvasPos(item.transform.position);
         }
 
         Vector2 FindSecondBoardItem()
         {
-            var items = FindObjectsOfType<Merge.MergeItem>();
+            var items = Core.Unity6Compat.FindAll<Merge.MergeItem>();
             if (items.Length < 2) return Vector2.zero;
             return WorldToCanvasPos(items[1].transform.position);
         }

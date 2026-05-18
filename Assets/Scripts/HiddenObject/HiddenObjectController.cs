@@ -140,6 +140,9 @@ namespace Sherlock.HiddenObject
 #endif
         }
 
+        // Hinweis Unity 6: Edit > Project Settings > Player > Active Input Handling
+        // auf "Both" stellen, damit Input.GetTouch() funktioniert.
+
         // ── Editor / PC fallback ──────────────────────────────────────────────
 
         void HandleMouseInput()

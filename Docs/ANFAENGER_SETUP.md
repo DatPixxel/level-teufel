@@ -1,5 +1,6 @@
 # Schritt-für-Schritt Setup — Für Anfänger
 ## Android & iOS — beide Plattformen
+## Getestet mit Unity 6 (6000.4.x)
 
 Ziel: In 15 Minuten das Merge-Board spielbar sehen — zuerst am PC, dann aufs Handy.
 
@@ -10,18 +11,19 @@ Ziel: In 15 Minuten das Merge-Board spielbar sehen — zuerst am PC, dann aufs H
 ### Schritt 1 — Unity Hub öffnen
 
 1. **Unity Hub** öffnen
-2. Links auf **"Installs"** klicken
-3. Prüfen ob du diese **Modules** installiert hast:
-   - ✅ **Android Build Support** (für Android-Handys)
-   - ✅ **Android SDK & NDK Tools** (kommt automatisch mit Android Build Support)
-   - ✅ **iOS Build Support** (für iPhone/iPad — nur auf Mac möglich!)
-
-> Falls nicht: Klick auf das Zahnrad neben deiner Unity-Version → "Add Modules"
+2. Links auf **"Installs"** klicken → du siehst Unity 6 (6000.x)
+3. Klick auf das **Zahnrad** neben Unity 6 → **"Add Modules"**
+4. Haken setzen bei:
+   - ✅ **Android Build Support**
+   - ✅ **Android SDK & NDK Tools**
+   - ✅ **OpenJDK**
+   - ✅ **iOS Build Support** *(nur Mac)*
+5. **"Install"** klicken — dauert ~10 Minuten
 
 ### Schritt 2 — Neues Projekt
 
 1. Klick auf **"New project"**
-2. Template wählen: **"2D (Core)"**
+2. Template wählen: **"2D (Core)"** ← wichtig, nicht "2D URP" oder "3D"
 3. Name: `SherlockMerge`
 4. Klick **"Create project"**
 
@@ -42,6 +44,17 @@ Ziel: In 15 Minuten das Merge-Board spielbar sehen — zuerst am PC, dann aufs H
    ```
 3. Zurück in Unity: Unity erkennt die neuen Scripts automatisch
    - Unten rechts siehst du einen Ladebalken — warte bis er fertig ist
+
+### Schritt 3b — Unity 6 Input System einstellen (wichtig!)
+
+> Nur nötig wenn du die Hidden-Object-Szenen nutzen willst.
+> Für die Demo kannst du diesen Schritt überspringen.
+
+1. Menü: **Edit → Project Settings**
+2. Links: **"Player"** auswählen
+3. Runterscrollen zu **"Other Settings"**
+4. **"Active Input Handling"** → auf **"Both"** stellen
+5. Unity startet neu — das ist normal!
 
 ### Schritt 4 — Fehler beheben (nur beim ersten Mal)
 

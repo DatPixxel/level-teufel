@@ -78,7 +78,7 @@ namespace Sherlock.Demo
             canvasGO.AddComponent<GraphicRaycaster>();
 
             // EventSystem (für Button-Klicks)
-            if (FindObjectOfType<UnityEngine.EventSystems.EventSystem>() == null)
+            if (Core.Unity6Compat.FindFirst<UnityEngine.EventSystems.EventSystem>() == null)
             {
                 var es = new GameObject("EventSystem");
                 es.AddComponent<UnityEngine.EventSystems.EventSystem>();
@@ -409,7 +409,7 @@ namespace Sherlock.Demo
             t.text      = text;
             t.fontSize  = fontSize;
             t.color     = color;
-            t.font      = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            t.font      = Core.Unity6Compat.GetFont();
             t.alignment = TextAnchor.MiddleCenter;
             var rt = go.GetComponent<RectTransform>();
             rt.anchorMin = new Vector2(0f, 1f);
@@ -446,7 +446,7 @@ namespace Sherlock.Demo
             t.text              = label;
             t.fontSize          = 13;
             t.color             = Color.white;
-            t.font              = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            t.font              = Core.Unity6Compat.GetFont();
             t.alignment         = TextAnchor.MiddleCenter;
             var rt              = textGO.GetComponent<RectTransform>();
             rt.anchorMin        = Vector2.zero;
@@ -491,7 +491,7 @@ namespace Sherlock.Demo
             var labelGO = new GameObject("Label");
             labelGO.transform.SetParent(go.transform, false);
             _label = labelGO.AddComponent<Text>();
-            _label.font      = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            _label.font      = Core.Unity6Compat.GetFont();
             _label.fontSize  = 11;
             _label.color     = Color.white;
             _label.alignment = TextAnchor.MiddleCenter;
