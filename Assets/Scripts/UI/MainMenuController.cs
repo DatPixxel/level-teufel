@@ -39,7 +39,7 @@ namespace Sherlock.UI
             newGameBtn?.onClick.AddListener(NewGame);
             settingsBtn?.onClick.AddListener(() => settingsPanel?.SetActive(true));
             leaderboardBtn?.onClick.AddListener(OpenLeaderboard);
-            restorePurchasesBtn?.onClick.AddListener(() => IAPManagerFull.Instance?.RestorePurchases());
+            restorePurchasesBtn?.onClick.AddListener(() => IAPManager.Instance?.RestorePurchases());
 
             // Settings defaults
             if (musicSlider) musicSlider.value = PlayerPrefs.GetFloat("pref_music_vol", 0.6f);

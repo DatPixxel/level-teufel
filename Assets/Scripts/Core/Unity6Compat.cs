@@ -53,7 +53,7 @@ namespace Sherlock.Core
         public static T FindFirst<T>() where T : Object
         {
 #if UNITY_6000_0_OR_NEWER
-            return Object.FindFirstObjectByType<T>();
+            return Object.FindAnyObjectByType<T>();
 #else
             return Object.FindObjectOfType<T>();
 #endif

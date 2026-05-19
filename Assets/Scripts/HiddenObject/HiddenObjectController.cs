@@ -188,7 +188,7 @@ namespace Sherlock.HiddenObject
                 {
                     ApplyPan(t.position);
                 }
-                else if (t.phase == TouchPhase.Ended || t.phase == TouchPhase.Cancelled)
+                else if (t.phase == TouchPhase.Ended || t.phase == TouchPhase.Canceled)
                 {
                     _isPanning = false;
                 }

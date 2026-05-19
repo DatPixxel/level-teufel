@@ -32,36 +32,34 @@ namespace Sherlock.UI
 
         void RefreshPrices()
         {
-            var iap = IAPManagerFull.Instance;
-            if (iap == null || !iap.IsInitialised) return;
-
-            SetPrice(rookieKitRow,   IAPManagerFull.Products.RookieKit);
-            SetPrice(coins500Row,    IAPManagerFull.Products.CoinPack500);
-            SetPrice(coins2500Row,   IAPManagerFull.Products.CoinPack2500);
-            SetPrice(removeAdsRow,   IAPManagerFull.Products.RemoveAds);
-            SetPrice(seasonPassRow,  IAPManagerFull.Products.SeasonPass);
+            // Prices shown as "–" until Unity IAP is integrated
+            SetPrice(rookieKitRow,   IAPManager.Products.RookieKit);
+            SetPrice(coins500Row,    IAPManager.Products.CoinPack500);
+            SetPrice(coins2500Row,   IAPManager.Products.CoinPack2500);
+            SetPrice(removeAdsRow,   IAPManager.Products.RemoveAds);
+            SetPrice(seasonPassRow,  IAPManager.Products.SeasonPass);
         }
 
         static void SetPrice(ShopItemRow row, string productId)
         {
             if (row == null) return;
-            row.SetPrice(IAPManagerFull.Instance?.GetLocalizedPrice(productId) ?? "–");
+            row.SetPrice("–");
         }
 
         void BindButtons()
         {
-            Bind(rookieKitRow,  IAPManagerFull.Products.RookieKit);
-            Bind(coins500Row,   IAPManagerFull.Products.CoinPack500);
-            Bind(coins2500Row,  IAPManagerFull.Products.CoinPack2500);
-            Bind(removeAdsRow,  IAPManagerFull.Products.RemoveAds);
-            Bind(seasonPassRow, IAPManagerFull.Products.SeasonPass);
+            Bind(rookieKitRow,  IAPManager.Products.RookieKit);
+            Bind(coins500Row,   IAPManager.Products.CoinPack500);
+            Bind(coins2500Row,  IAPManager.Products.CoinPack2500);
+            Bind(removeAdsRow,  IAPManager.Products.RemoveAds);
+            Bind(seasonPassRow, IAPManager.Products.SeasonPass);
         }
 
         static void Bind(ShopItemRow row, string productId)
         {
             if (row == null) return;
             row.BuyButton.onClick.RemoveAllListeners();
-            row.BuyButton.onClick.AddListener(() => IAPManagerFull.Instance?.Purchase(productId));
+            row.BuyButton.onClick.AddListener(() => IAPManager.Instance?.Purchase(productId));
         }
     }
 
