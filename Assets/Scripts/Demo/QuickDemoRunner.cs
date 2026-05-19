@@ -73,8 +73,10 @@ namespace Sherlock.Demo
             var canvasGO       = new GameObject("Canvas");
             _canvas            = canvasGO.AddComponent<Canvas>();
             _canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvasGO.AddComponent<CanvasScaler>().uiScaleMode =
-                CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            var scaler = canvasGO.AddComponent<CanvasScaler>();
+            scaler.uiScaleMode         = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            scaler.referenceResolution = new Vector2(1080, 1920);
+            scaler.matchWidthOrHeight  = 0.5f;
             canvasGO.AddComponent<GraphicRaycaster>();
 
             // EventSystem (für Button-Klicks)
