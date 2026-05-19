@@ -63,7 +63,7 @@ namespace Sherlock.Core
         public static T[] FindAll<T>() where T : Object
         {
 #if UNITY_6000_0_OR_NEWER
-            return Object.FindObjectsByType<T>(FindObjectsSortMode.None);
+            return Object.FindObjectsByType<T>(FindObjectsInactive.Exclude);
 #else
             return Object.FindObjectsOfType<T>();
 #endif
