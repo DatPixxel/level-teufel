@@ -38,6 +38,56 @@ var Input = (function () {
     touch.left = touch.right = touch.jump = false;
   });
 
+  // Joypad (links/rechts): breiter Schieber statt zweier Tasten.
+  // Der Daumen kann irgendwo auf dem Pad landen und zieht dann in die
+  // gewünschte Richtung – mit kleiner Totzone in der Mitte.
+  function bindJoypad(pad, knob) {
+    if (!pad) return;
+    var pid = null;
+
+    function setDir(clientX) {
+      var rect = pad.getBoundingClientRect();
+      var half = rect.width / 2;
+      var dx = clientX - (rect.left + half);
+      var dead = Math.max(6, half * 0.08);
+      touch.left = dx < -dead;
+      touch.right = dx > dead;
+      var max = half - rect.height / 2;
+      var off = Math.max(-max, Math.min(max, dx));
+      if (knob) knob.style.transform = 'translateX(' + off.toFixed(1) + 'px)';
+    }
+
+    function reset() {
+      pid = null;
+      touch.left = touch.right = false;
+      pad.classList.remove('pressed');
+      if (knob) knob.style.transform = 'translateX(0)';
+    }
+
+    pad.addEventListener('pointerdown', function (e) {
+      e.preventDefault();
+      if (pid !== null) return; // nur ein Finger steuert das Pad
+      pid = e.pointerId;
+      try { pad.setPointerCapture(e.pointerId); } catch (err) { /* synthetische Events */ }
+      lastWasTouch = true;
+      Sfx.unlock();
+      pad.classList.add('pressed');
+      setDir(e.clientX);
+    });
+    pad.addEventListener('pointermove', function (e) {
+      if (e.pointerId !== pid) return;
+      setDir(e.clientX);
+    });
+    function release(e) {
+      if (e.pointerId === pid) reset();
+    }
+    pad.addEventListener('pointerup', release);
+    pad.addEventListener('pointercancel', release);
+    pad.addEventListener('lostpointercapture', release);
+    pad.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+    window.addEventListener('blur', reset);
+  }
+
   // Touch-Buttons: Pointer Events mit Capture, damit Multi-Touch
   // (laufen + springen gleichzeitig) zuverlässig funktioniert.
   function bindButton(el, name) {
@@ -64,8 +114,7 @@ var Input = (function () {
   return {
     escPressed: false,
     init: function () {
-      bindButton(document.getElementById('btn-left'), 'left');
-      bindButton(document.getElementById('btn-right'), 'right');
+      bindJoypad(document.getElementById('joypad'), document.getElementById('joypad-knob'));
       bindButton(document.getElementById('btn-jump'), 'jump');
     },
     state: function () {

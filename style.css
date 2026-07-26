@@ -255,6 +255,53 @@ html, body {
   background: rgba(242, 242, 242, 0.32);
 }
 
+/* Joypad: breiter Schieber für links/rechts – Daumen drauf und ziehen.
+   Deutlich leichter zu treffen als zwei getrennte Tasten. */
+#joypad {
+  position: relative;
+  width: clamp(160px, 36vmin, 240px);
+  height: clamp(64px, 13vmin, 92px);
+  border-radius: 999px;
+  background: rgba(242, 242, 242, 0.1);
+  border: 2px solid rgba(242, 242, 242, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+#joypad::before,
+#joypad::after {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: clamp(16px, 3.5vmin, 24px);
+  color: rgba(242, 242, 242, 0.35);
+  pointer-events: none;
+}
+
+#joypad::before { content: '◀'; left: clamp(10px, 2.5vmin, 16px); }
+#joypad::after { content: '▶'; right: clamp(10px, 2.5vmin, 16px); }
+
+#joypad.pressed {
+  background: rgba(242, 242, 242, 0.16);
+}
+
+#joypad-knob {
+  width: clamp(50px, 10.5vmin, 74px);
+  height: clamp(50px, 10.5vmin, 74px);
+  border-radius: 50%;
+  background: rgba(242, 242, 242, 0.28);
+  border: 2px solid rgba(242, 242, 242, 0.5);
+  pointer-events: none;
+}
+
+/* Ohne Finger schnappt der Knubbel zur Mitte zurück */
+#joypad:not(.pressed) #joypad-knob {
+  transition: transform 0.12s ease-out;
+}
+
 /* ---------- Hochformat-Hinweis ---------- */
 #rotate-overlay {
   position: fixed;

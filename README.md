@@ -25,7 +25,7 @@ benötigt.
 
 | | Handy | Tastatur |
 |---|---|---|
-| Laufen | ◀ ▶ Buttons unten links | Pfeiltasten oder A/D |
+| Laufen | Joypad unten links (Daumen drauf, links/rechts ziehen) | Pfeiltasten oder A/D |
 | Springen | ⬆ Button unten rechts | Leertaste, W oder Pfeil hoch |
 | Level neu starten | ↻ Button oben rechts | R |
 | Zur Levelauswahl | ☰ Button oben rechts | Esc |
