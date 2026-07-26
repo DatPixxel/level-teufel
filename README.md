@@ -69,7 +69,7 @@ prüfen und den Workflow unter **Actions** neu starten.
 |---|---|
 | `index.html` / `style.css` | Seite, Menüs, Touch-Buttons |
 | `js/config.js` | alle Stellschrauben (Physik, Farben) |
-| `js/levels.js` | die 18 Level |
+| `js/levels.js` | die 24 Level |
 | `js/traps.js` | Fallen-System |
 | `js/player.js` | Spielerphysik (Coyote-Time, Jump-Buffer) |
 | `js/renderer.js` | Grafik |
