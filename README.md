@@ -34,11 +34,18 @@ Tipp: Kurz tippen = kleiner Hüpfer, gedrückt halten = hoher Sprung.
 
 ## 📖 Die Kapitel
 
-1. **Willkommen** (Level 1–6) – lerne, niemandem zu vertrauen.
+1. **Willkommen** (Level 1–6) – lerne, niemandem zu vertrauen. Auch hier
+   stirbt man schon reihenweise – willkommen bedeutet nicht harmlos.
 2. **Vertrauen ist gut** (Level 7–12) – … Kontrolle ist besser.
-3. **Bosheit** (Level 13–17) – jede Falle bringt ihre beste Freundin mit.
+3. **Bosheit** (Level 13–17) – jede Falle bringt ihre beste Freundin mit,
+   und manche Tür geht am Ende dahin zurück, wo du herkamst.
 4. **Hölle** (Level 18–24) – bröselnde Böden, Stachelwände, Lügen-Türen und
    gespiegelte Steuerung. Viel Glück. Du wirst ihn brauchen.
+
+**Fair bleibt es trotzdem:** Jedes Level ist mit einer Headless-Simulation
+(`tools/sim.js`, Experten-Bots auf der echten Spiellogik) nachweislich
+schaffbar – aber nur mit auswendig gelerntem Plan. Ein Bot, der einfach nur
+rennt und über Sichtbares springt, stirbt in **allen 24 Leveln**.
 
 Dein Fortschritt (freigeschaltete Level, Tode) wird automatisch im Browser
 gespeichert. Bei Todes-Meilensteinen verspottet dich das Spiel, und auf dem
@@ -75,5 +82,6 @@ prüfen und den Workflow unter **Actions** neu starten.
 | `js/renderer.js` | Grafik |
 | `js/input.js` / `js/audio.js` / `js/storage.js` | Eingabe, Sound, Speicherstand |
 | `js/ui.js` / `js/main.js` | Menüs und Spielschleife |
+| `tools/sim.js` / `tools/bots.js` | Headless-Schaffbarkeits-Beweis (`node tools/sim.js`) |
 
 Viel Spaß – und nicht ärgern! 😈
