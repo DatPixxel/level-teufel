@@ -46,7 +46,11 @@ var Player = (function () {
     }
 
     // Horizontal: sofortige Reaktion (Präzisions-Plattformer)
-    var dir = (input.right ? 1 : 0) - (input.left ? 1 : 0);
+    // Gemeine Ausnahme: die flipControls-Falle spiegelt links/rechts
+    var flipped = rt.flipUntil > rt.time;
+    var inLeft = flipped ? input.right : input.left;
+    var inRight = flipped ? input.left : input.right;
+    var dir = (inRight ? 1 : 0) - (inLeft ? 1 : 0);
     S.vx = dir * CONFIG.RUN_SPEED;
     if (dir !== 0) S.face = dir;
 
@@ -141,7 +145,7 @@ var Player = (function () {
           S.vy = 0;
           S.onGround = true;
           S.platform = pl;
-          if (!wasOnGround && pl.def.reverseOnLand && !pl.reversed) {
+          if (!wasOnGround && pl.def.reverseOnLand && (pl.def.every || !pl.reversed)) {
             pl.dir *= -1;
             pl.reversed = true;
             Sfx.trap();

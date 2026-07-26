@@ -48,6 +48,10 @@ var Traps = (function () {
       projectiles: [],
       emitters: [],
       springs: [],
+      crumbles: {},   // "c,r" -> 'idle' | 'breaking' (Bröckel-Boden)
+      fakeDoors: [],  // sehen aus wie die echte Tür, sind es aber nicht
+      walls: [],      // nachrückende Stachelwände
+      flipUntil: 0,   // Steuerung gespiegelt bis zu diesem Zeitpunkt
       shakes: [],     // Wackel-Animationen vor dem Verschwinden
       pending: [],    // zeitversetzte Aktionen
       revealed: {},   // aufgedeckte unsichtbare Wände ("c,r" -> true)
@@ -111,6 +115,17 @@ var Traps = (function () {
           break;
         case 'fallBlock':
           rt.blocks.push({ def: td, inst: inst, c: td.cell[0], r: td.cell[1], y: td.cell[1] * T, vy: 0, state: 'hang' });
+          break;
+        case 'crumble':
+          td.cells.forEach(function (cell) { rt.crumbles[cell[0] + ',' + cell[1]] = 'idle'; });
+          inst.state = 'done';
+          break;
+        case 'fakeDoor':
+          rt.fakeDoors.push({ def: td, c: td.cell[0], r: td.cell[1], gone: false });
+          inst.state = 'done';
+          break;
+        case 'spikeWall':
+          rt.walls.push({ def: td, inst: inst, x: td.fromX * T, active: false });
           break;
       }
     }
@@ -212,6 +227,18 @@ var Traps = (function () {
           if (p.def === td) p.dir *= -1;
         });
         break;
+
+      case 'spikeWall':
+        rt.walls.forEach(function (w) {
+          if (w.inst === inst) w.active = true;
+        });
+        Sfx.trap();
+        break;
+
+      case 'flipControls':
+        rt.flipUntil = rt.time + (td.duration || 4);
+        Sfx.trap();
+        break;
     }
   }
 
@@ -308,11 +335,19 @@ var Traps = (function () {
       pr.x += pr.vx * dt;
       return pr.x > -40 && pr.x < CONFIG.WIDTH + 40;
     });
-    rt.emitters.forEach(function (em) {
+    rt.emitters = rt.emitters.filter(function (em) {
+      // Ein Emitter kann verstummen, sobald eine andere Falle gefeuert hat
+      if (em.def.stopId && rt.firedAt[em.def.stopId] != null) return false;
       if (rt.time >= em.nextAt) {
         spawnProjectile(rt, em.def);
         em.nextAt = rt.time + (em.def.interval || 2);
       }
+      return true;
+    });
+
+    // Stachelwände rücken nach
+    rt.walls.forEach(function (w) {
+      if (w.active) w.x += (w.def.speed || 120) * dt;
     });
 
     // Federn-Animation abklingen lassen
@@ -325,6 +360,42 @@ var Traps = (function () {
   // ---------------------------------------------------------------
   function postUpdate(rt, pl, dt) {
     var box = { x: pl.x, y: pl.y, w: pl.w, h: pl.h };
+
+    // Bröckel-Boden: Zellen brechen kurz nachdem man auf ihnen steht
+    if (pl.onGround) {
+      var footR = Math.floor((pl.y + pl.h + 1) / T);
+      var cl = Math.floor(pl.x / T);
+      var cr2 = Math.floor((pl.x + pl.w - 0.01) / T);
+      for (var fc = cl; fc <= cr2; fc++) {
+        var key = fc + ',' + footR;
+        if (rt.crumbles[key] === 'idle' && footR >= 0 && footR < CONFIG.ROWS && rt.solid[footR][fc] === 1) {
+          rt.crumbles[key] = 'breaking';
+          rt.shakes.push({ c: fc, r: footR, until: rt.time + CONFIG.CRUMBLE_DELAY });
+          (function (c0, r0) {
+            rt.pending.push({
+              at: rt.time + CONFIG.CRUMBLE_DELAY,
+              run: function () {
+                rt.solid[r0][c0] = 0;
+                Renderer.poof(c0 * T + T / 2, r0 * T + T / 2, '#5a5a68');
+              }
+            });
+          })(fc, footR);
+        }
+      }
+    }
+
+    // Fake-Türen: puff – weg (und lösen ggf. Folge-Fallen aus)
+    rt.fakeDoors.forEach(function (fd) {
+      if (fd.gone) return;
+      var rect = { x: fd.c * T + 6, y: (fd.r - 1) * T + 8, w: T - 12, h: 2 * T - 8 };
+      if (intersects(box, rect)) {
+        fd.gone = true;
+        if (fd.def.id) rt.firedAt[fd.def.id] = rt.time;
+        Renderer.poof(fd.c * T + T / 2, fd.r * T, CONFIG.COLORS.door);
+        Renderer.poof(fd.c * T + T / 2, (fd.r - 1) * T, CONFIG.COLORS.door);
+        Sfx.poof();
+      }
+    });
 
     // Trigger
     rt.traps.forEach(function (inst) {
@@ -385,6 +456,10 @@ var Traps = (function () {
 
     rt.projectiles.forEach(function (pr) {
       if (intersects(box, pr)) kill = true;
+    });
+
+    rt.walls.forEach(function (w) {
+      if (w.active && pl.x + 4 < w.x) kill = true;
     });
 
     if (rt.appearCheck) {

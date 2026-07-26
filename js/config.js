@@ -30,6 +30,9 @@ var CONFIG = {
   CRUSHER_RETRACT: 170,
   PLATFORM_SPEED: 100,
 
+  CRUMBLE_DELAY: 0.3,    // Zeit bis ein betretener Bröckel-Block bricht
+  LIGHT_RADIUS: 150,     // Standard-Lichtradius in Dunkel-Leveln
+
   DEATH_FREEZE: 0.45,    // Pause zwischen Tod und Respawn
   DOOR_POOF: 0.5,
 

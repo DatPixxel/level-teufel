@@ -163,6 +163,10 @@ var Renderer = (function () {
       ctx.stroke();
     }
 
+    // Fake-Türen zuerst – absichtlich identisch mit der echten Tür
+    rt.fakeDoors.forEach(function (fd) {
+      if (!fd.gone) drawDoor(fd);
+    });
     drawDoor(rt.door);
 
     // Wackel-Zellen sammeln
@@ -259,6 +263,22 @@ var Renderer = (function () {
       ctx.fill();
     });
 
+    // Nachrückende Stachelwand
+    rt.walls.forEach(function (w) {
+      if (w.x <= 0) return;
+      ctx.fillStyle = '#1b1b22';
+      ctx.fillRect(0, 0, w.x - 6, CONFIG.HEIGHT);
+      ctx.fillStyle = C.spike;
+      for (var wy = 0; wy < CONFIG.HEIGHT; wy += 16) {
+        ctx.beginPath();
+        ctx.moveTo(w.x - 8, wy);
+        ctx.lineTo(w.x + 2, wy + 8);
+        ctx.lineTo(w.x - 8, wy + 16);
+        ctx.closePath();
+        ctx.fill();
+      }
+    });
+
     if (playerVisible && playerState) drawPlayer(playerState);
 
     // Partikel
@@ -273,11 +293,23 @@ var Renderer = (function () {
     if (rt.def.dark && playerState) {
       var px = playerState.x + playerState.w / 2;
       var py = playerState.y + playerState.h / 2;
-      var grad = ctx.createRadialGradient(px, py, 55, px, py, 150);
+      var radius = rt.def.lightRadius || CONFIG.LIGHT_RADIUS;
+      var grad = ctx.createRadialGradient(px, py, radius * 0.37, px, py, radius);
       grad.addColorStop(0, 'rgba(8,8,12,0)');
       grad.addColorStop(1, 'rgba(8,8,12,0.985)');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, CONFIG.WIDTH, CONFIG.HEIGHT);
+    }
+
+    // Gespiegelte Steuerung: unübersehbarer Hinweis
+    if (rt.flipUntil > rt.time) {
+      ctx.fillStyle = 'rgba(150, 80, 220, 0.10)';
+      ctx.fillRect(0, 0, CONFIG.WIDTH, CONFIG.HEIGHT);
+      ctx.fillStyle = '#c9a0f0';
+      ctx.font = 'bold 26px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('↔ Steuerung vertauscht!', CONFIG.WIDTH / 2, 46);
+      ctx.textAlign = 'left';
     }
 
     // Todes-Blitz

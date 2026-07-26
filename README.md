@@ -1,11 +1,12 @@
 # Level Teufel 😈
 
-Ein gemeines kleines Handy-Spiel im Stil von **Level Devil**: Die Level sehen
-harmlos aus – sind sie aber nicht. Böden verschwinden, Stacheln schnellen hoch,
-Türen laufen weg. Sterben gehört dazu: Deine Tode werden gezählt und sind Teil
-des Spaßes.
+Ein absichtlich gemeines Handy-Spiel im Stil von **Level Devil**: Die Level
+sehen harmlos aus – sind sie aber nicht. Böden verschwinden, Stacheln schnellen
+hoch, Türen laufen weg, Wände rücken nach und manchmal ist links plötzlich
+rechts. **Dieses Spiel will, dass du verzweifelst.** Sterben gehört dazu: Deine
+Tode werden gezählt, verspottet – und am Ende gibt es dafür einen Rang.
 
-**18 Level in 3 Kapiteln** · komplett auf Deutsch · läuft direkt im Browser,
+**24 Level in 4 Kapiteln** · komplett auf Deutsch · läuft direkt im Browser,
 keine Installation nötig.
 
 ## 🎮 Sofort spielen
@@ -35,10 +36,14 @@ Tipp: Kurz tippen = kleiner Hüpfer, gedrückt halten = hoher Sprung.
 
 1. **Willkommen** (Level 1–6) – lerne, niemandem zu vertrauen.
 2. **Vertrauen ist gut** (Level 7–12) – … Kontrolle ist besser.
-3. **Bosheit** (Level 13–18) – jede Falle bringt ihre beste Freundin mit.
+3. **Bosheit** (Level 13–17) – jede Falle bringt ihre beste Freundin mit.
+4. **Hölle** (Level 18–24) – bröselnde Böden, Stachelwände, Lügen-Türen und
+   gespiegelte Steuerung. Viel Glück. Du wirst ihn brauchen.
 
 Dein Fortschritt (freigeschaltete Level, Tode) wird automatisch im Browser
-gespeichert.
+gespeichert. Bei Todes-Meilensteinen verspottet dich das Spiel, und auf dem
+Sieg-Screen wartet dein Rang – von „Der Teufel persönlich" (unter 150 Tode)
+bis „Unsterblich — aus Übung".
 
 ## 🌐 Spiel online stellen
 
@@ -56,7 +61,9 @@ prüfen und den Workflow unter **Actions** neu starten.
   lassen sich dort mit etwas Ausprobieren selbst bauen:
   `#` = Wand, `.` = leer, `P` = Start, `D` = Tür, `^` = Stacheln, `~` = Fake-Boden.
 - Fallen und Auslöser (Zonen, Timer, Ketten) sind in `js/traps.js` beschrieben –
-  12 Fallen-Typen von `vanish` (Boden verschwindet) bis `doorMove` (Tür flieht).
+  16 Fallen-Typen von `vanish` (Boden verschwindet) über `crumble` (Boden
+  bröselt), `fakeDoor` (Lügen-Tür) und `spikeWall` (nachrückende Stachelwand)
+  bis `flipControls` (Steuerung gespiegelt).
 
 | Datei | Aufgabe |
 |---|---|

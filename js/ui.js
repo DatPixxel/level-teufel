@@ -58,7 +58,7 @@ var UI = (function () {
     hideAll();
     els.grid.innerHTML = '';
     var d = Save.get();
-    var chapters = { 1: 'Kapitel 1 · Willkommen', 2: 'Kapitel 2 · Vertrauen ist gut', 3: 'Kapitel 3 · Bosheit' };
+    var chapters = { 1: 'Kapitel 1 · Willkommen', 2: 'Kapitel 2 · Vertrauen ist gut', 3: 'Kapitel 3 · Bosheit', 4: 'Kapitel 4 · Hölle' };
     var currentChapter = 0;
     LEVELS.forEach(function (lv, i) {
       if (lv.chapter !== currentChapter) {
@@ -97,18 +97,27 @@ var UI = (function () {
     els.hudDeaths.textContent = '💀 ' + (d.deaths[i] | 0);
   }
 
+  function rankFor(deaths) {
+    if (deaths < 150) return 'Rang: Der Teufel persönlich 😈';
+    if (deaths < 350) return 'Rang: Schmerzresistent 🩹';
+    if (deaths < 700) return 'Rang: Sturkopf 🪨';
+    return 'Rang: Unsterblich — aus Übung 💀';
+  }
+
   function showWin() {
     hideAll();
     els.winDeaths.textContent = 'Gesamte Tode: ' + Save.get().totalDeaths + ' 💀';
+    var rankEl = document.getElementById('win-rank');
+    if (rankEl) rankEl.textContent = rankFor(Save.get().totalDeaths);
     els.win.classList.remove('hidden');
   }
 
   var toastTimeout = null;
-  function toast(msg) {
+  function toast(msg, long) {
     els.toast.textContent = msg;
     els.toast.classList.remove('hidden');
     if (toastTimeout) clearTimeout(toastTimeout);
-    toastTimeout = setTimeout(function () { els.toast.classList.add('hidden'); }, 1100);
+    toastTimeout = setTimeout(function () { els.toast.classList.add('hidden'); }, long ? 2200 : 1100);
   }
 
   return {

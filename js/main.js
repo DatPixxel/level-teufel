@@ -47,12 +47,32 @@ var Game = (function () {
     state = 'playing';
   }
 
+  // Spott bei Todes-Meilensteinen – Verzweiflung gehört zum Konzept.
+  var TAUNTS = [
+    '{n} Tode. Die Tür lacht dich aus.',
+    'Schon {n} Tode? Das Level ist 20 Sekunden lang.',
+    '{n}. Tod. Der Boden dankt für deine Treue.',
+    'Tipp: Einfach nicht sterben. ({n} Tode)',
+    '{n} Tode. Der Stachel kennt dich jetzt beim Namen.',
+    '{n} Tode. Es wird nicht leichter. Versprochen.'
+  ];
+
+  function tauntMilestone(deaths) {
+    return deaths === 5 || deaths === 10 || deaths === 20 || deaths === 35 ||
+      (deaths >= 50 && deaths % 25 === 0);
+  }
+
   function die() {
     var S = Player.state;
     Sfx.death();
     Renderer.deathBurst(S.x + S.w / 2, S.y + S.h / 2);
     Save.addDeath(levelIndex);
     UI.updateDeaths(levelIndex);
+    var deaths = Save.get().deaths[levelIndex] | 0;
+    if (tauntMilestone(deaths)) {
+      var msg = TAUNTS[(deaths + levelIndex) % TAUNTS.length].replace('{n}', deaths);
+      UI.toast(msg, true);
+    }
     state = 'dead';
     timer = CONFIG.DEATH_FREEZE;
   }
@@ -85,7 +105,13 @@ var Game = (function () {
           state = 'win';
           UI.showWin();
         } else {
+          var chapterChanged = LEVELS[levelIndex + 1].chapter !== LEVELS[levelIndex].chapter;
           loadLevel(levelIndex + 1);
+          if (chapterChanged) {
+            var msgs = { 2: 'Kapitel 2 — es wird schlimmer.', 3: 'Kapitel 3 — es wird viel schlimmer.', 4: 'Kapitel 4 — willkommen in der Hölle. 😈' };
+            var m = msgs[LEVELS[levelIndex].chapter];
+            if (m) UI.toast(m, true);
+          }
         }
       }
     }
