@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#141419">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Level Teufel</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>😈</text></svg>">
+</head>
+<body>
+  <div id="game-wrap">
+    <canvas id="game"></canvas>
+
+    <!-- HUD während des Spiels -->
+    <div id="hud" class="hidden">
+      <span id="hud-name"></span>
+      <span id="hud-deaths">💀 0</span>
+      <span class="hud-buttons">
+        <button id="btn-hud-restart" title="Neustart (R)">↻</button>
+        <button id="btn-hud-back" title="Levelauswahl">☰</button>
+      </span>
+    </div>
+
+    <!-- Titelbildschirm -->
+    <div id="screen-title" class="screen">
+      <h1>LEVEL<br>TEUFEL</h1>
+      <p class="subtitle">Ein gemeines kleines Spiel&nbsp;😈</p>
+      <button id="btn-start" class="menu-btn">Spielen</button>
+      <button id="btn-select" class="menu-btn">Levelauswahl</button>
+      <button id="btn-sound" class="menu-btn small">Ton: an 🔊</button>
+      <p class="hint">Steuerung: Pfeiltasten / WASD + Leertaste · Handy: Buttons unten</p>
+    </div>
+
+    <!-- Levelauswahl -->
+    <div id="screen-levels" class="screen">
+      <h2>Levelauswahl</h2>
+      <div id="level-grid"></div>
+      <button id="btn-levels-back" class="menu-btn small">Zurück</button>
+    </div>
+
+    <!-- Sieg-Screen -->
+    <div id="screen-win" class="screen">
+      <h1>GESCHAFFT!&nbsp;🎉</h1>
+      <p class="subtitle">Du hast alle 18 Level überlebt.</p>
+      <p id="win-deaths" class="subtitle"></p>
+      <button id="btn-win-title" class="menu-btn">Zurück zum Titel</button>
+      <button id="btn-win-reset" class="menu-btn small">Fortschritt löschen</button>
+    </div>
+
+    <!-- Kurze Einblendung ("Geschafft!") -->
+    <div id="toast" class="hidden"></div>
+
+    <!-- Touch-Steuerung (nur auf Touch-Geräten sichtbar) -->
+    <div id="touch-controls" class="hidden">
+      <div class="tc-left">
+        <div id="btn-left" class="touch-btn">◀</div>
+        <div id="btn-right" class="touch-btn">▶</div>
+      </div>
+      <div class="tc-right">
+        <div id="btn-jump" class="touch-btn">⬆</div>
+      </div>
+    </div>
+
+    <!-- Hochformat-Hinweis -->
+    <div id="rotate-overlay">
+      <div>🔄</div>
+      <p>Bitte dreh dein Handy quer!</p>
+    </div>
+  </div>
+
+  <!-- Reihenfolge = Abhängigkeiten: bewusst einfache Skripte statt Module,
+       damit das Spiel auch direkt von der Festplatte (file://) läuft. -->
+  <script src="js/config.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/input.js"></script>
+  <script src="js/renderer.js"></script>
+  <script src="js/traps.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/levels.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
