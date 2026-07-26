@@ -34,24 +34,6 @@ html, body {
   image-rendering: auto;
 }
 
-/* Auf Touch-Geräten bekommt die Steuerung unten einen eigenen Streifen:
-   Das Spielfeld rückt nach oben, damit Daumen und Joypad nie die
-   Spielfigur verdecken (die Action spielt oft in der untersten Zeile). */
-@media (pointer: coarse) {
-  :root {
-    --ctrl-h: calc(clamp(64px, 13vmin, 92px) + max(14px, env(safe-area-inset-bottom)) + 8px);
-  }
-
-  #game-wrap {
-    padding-bottom: var(--ctrl-h);
-  }
-
-  #game {
-    width: min(100vw, calc((100vh - var(--ctrl-h)) * 960 / 544));
-    height: min(calc(100vh - var(--ctrl-h)), calc(100vw * 544 / 960));
-  }
-}
-
 .hidden { display: none !important; }
 
 /* ---------- Menü-Screens ---------- */
@@ -178,10 +160,10 @@ html, body {
   align-items: center;
   gap: 16px;
   padding: 8px 14px;
-  z-index: 10;
+  z-index: 16;
+  pointer-events: none;
   font-size: clamp(13px, 2.6vmin, 18px);
   color: #b8b8c4;
-  pointer-events: none;
 }
 
 #hud-name { font-weight: 600; color: #f2f2f2; }
@@ -227,6 +209,10 @@ html, body {
 }
 
 /* ---------- Touch-Steuerung ---------- */
+/* Floating-Konzept: linke Bildschirmhälfte = Joypad erscheint unter dem
+   Daumen (ziehen = laufen), rechte Hälfte = tippen/halten = springen.
+   So entscheidet der Spieler selbst, wo seine Finger liegen – und das
+   Spielfeld bleibt Vollbild. */
 #touch-controls {
   position: fixed;
   inset: 0;
@@ -240,85 +226,95 @@ html, body {
   #touch-controls:not(.hidden) { display: block; }
 }
 
-.tc-left {
-  position: absolute;
-  left: max(12px, env(safe-area-inset-left));
-  bottom: max(14px, env(safe-area-inset-bottom));
-  display: flex;
-  gap: 14px;
-}
+#hud button { pointer-events: auto; }
 
-.tc-right {
+#tz-left,
+#tz-right {
   position: absolute;
-  right: max(12px, env(safe-area-inset-right));
-  bottom: max(14px, env(safe-area-inset-bottom));
-}
-
-.touch-btn {
-  width: clamp(64px, 13vmin, 92px);
-  height: clamp(64px, 13vmin, 92px);
-  border-radius: 50%;
-  background: rgba(242, 242, 242, 0.14);
-  border: 2px solid rgba(242, 242, 242, 0.35);
-  color: rgba(242, 242, 242, 0.8);
-  font-size: clamp(24px, 5vmin, 36px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  top: 0;
+  bottom: 0;
+  width: 50%;
   pointer-events: auto;
   touch-action: none;
 }
 
-.touch-btn.pressed {
-  background: rgba(242, 242, 242, 0.32);
+#tz-left { left: 0; }
+#tz-right { right: 0; }
+
+/* Dezente Eck-Hinweise, damit man die Zonen findet */
+#tz-left::after,
+#tz-right::after {
+  position: absolute;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  font-size: clamp(18px, 4vmin, 26px);
+  color: rgba(242, 242, 242, 0.18);
+  pointer-events: none;
 }
 
-/* Joypad: breiter Schieber für links/rechts – Daumen drauf und ziehen.
-   Deutlich leichter zu treffen als zwei getrennte Tasten. */
+#tz-left::after { content: '◀ ▶'; left: max(18px, env(safe-area-inset-left)); }
+#tz-right::after { content: '⬆'; right: max(18px, env(safe-area-inset-right)); }
+
+/* Joypad erscheint an der Fingerposition */
 #joypad {
-  position: relative;
-  width: clamp(160px, 36vmin, 240px);
-  height: clamp(64px, 13vmin, 92px);
+  position: absolute;
+  width: clamp(140px, 30vmin, 200px);
+  height: clamp(56px, 12vmin, 84px);
+  transform: translate(-50%, -50%);
   border-radius: 999px;
   background: rgba(242, 242, 242, 0.1);
   border: 2px solid rgba(242, 242, 242, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  pointer-events: auto;
-  touch-action: none;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.15s ease-out;
 }
+
+#joypad.off { opacity: 0; }
 
 #joypad::before,
 #joypad::after {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: clamp(16px, 3.5vmin, 24px);
+  font-size: clamp(14px, 3vmin, 20px);
   color: rgba(242, 242, 242, 0.35);
   pointer-events: none;
 }
 
-#joypad::before { content: '◀'; left: clamp(10px, 2.5vmin, 16px); }
-#joypad::after { content: '▶'; right: clamp(10px, 2.5vmin, 16px); }
-
-#joypad.pressed {
-  background: rgba(242, 242, 242, 0.16);
-}
+#joypad::before { content: '◀'; left: clamp(9px, 2vmin, 14px); }
+#joypad::after { content: '▶'; right: clamp(9px, 2vmin, 14px); }
 
 #joypad-knob {
-  width: clamp(50px, 10.5vmin, 74px);
-  height: clamp(50px, 10.5vmin, 74px);
+  width: clamp(44px, 9.5vmin, 64px);
+  height: clamp(44px, 9.5vmin, 64px);
   border-radius: 50%;
-  background: rgba(242, 242, 242, 0.28);
-  border: 2px solid rgba(242, 242, 242, 0.5);
+  background: rgba(242, 242, 242, 0.3);
+  border: 2px solid rgba(242, 242, 242, 0.55);
   pointer-events: none;
 }
 
-/* Ohne Finger schnappt der Knubbel zur Mitte zurück */
-#joypad:not(.pressed) #joypad-knob {
-  transition: transform 0.12s ease-out;
+/* Sprung-Feedback an der Tipp-Position */
+#jump-ring {
+  position: absolute;
+  width: clamp(56px, 12vmin, 84px);
+  height: clamp(56px, 12vmin, 84px);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: rgba(242, 242, 242, 0.2);
+  border: 2px solid rgba(242, 242, 242, 0.5);
+  color: rgba(242, 242, 242, 0.85);
+  font-size: clamp(22px, 4.5vmin, 32px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.15s ease-out;
 }
+
+#jump-ring.off { opacity: 0; }
 
 /* ---------- Hochformat-Hinweis ---------- */
 #rotate-overlay {

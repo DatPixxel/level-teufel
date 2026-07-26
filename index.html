@@ -32,7 +32,7 @@
       <button id="btn-start" class="menu-btn">Spielen</button>
       <button id="btn-select" class="menu-btn">Levelauswahl</button>
       <button id="btn-sound" class="menu-btn small">Ton: an 🔊</button>
-      <p class="hint">Steuerung: Pfeiltasten / WASD + Leertaste · Handy: Joypad unten links</p>
+      <p class="hint">Steuerung: Pfeiltasten / WASD + Leertaste · Handy: links Daumen auflegen &amp; ziehen = laufen, rechts tippen = springen</p>
     </div>
 
     <!-- Levelauswahl -->
@@ -55,16 +55,16 @@
     <!-- Kurze Einblendung ("Geschafft!") -->
     <div id="toast" class="hidden"></div>
 
-    <!-- Touch-Steuerung (nur auf Touch-Geräten sichtbar) -->
+    <!-- Touch-Steuerung (nur auf Touch-Geräten sichtbar):
+         linke Bildschirmhälfte = Floating-Joypad (laufen),
+         rechte Hälfte = tippen/halten zum Springen. -->
     <div id="touch-controls" class="hidden">
-      <div class="tc-left">
-        <div id="joypad">
-          <div id="joypad-knob"></div>
-        </div>
+      <div id="tz-left"></div>
+      <div id="tz-right"></div>
+      <div id="joypad" class="off">
+        <div id="joypad-knob"></div>
       </div>
-      <div class="tc-right">
-        <div id="btn-jump" class="touch-btn">⬆</div>
-      </div>
+      <div id="jump-ring" class="off">⬆</div>
     </div>
 
     <!-- Hochformat-Hinweis -->

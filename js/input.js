@@ -38,84 +38,111 @@ var Input = (function () {
     touch.left = touch.right = touch.jump = false;
   });
 
-  // Joypad (links/rechts): breiter Schieber statt zweier Tasten.
-  // Der Daumen kann irgendwo auf dem Pad landen und zieht dann in die
-  // gewünschte Richtung – mit kleiner Totzone in der Mitte.
-  function bindJoypad(pad, knob) {
-    if (!pad) return;
+  // Floating-Joypad: Die linke Bildschirmhälfte ist die Lauf-Zone.
+  // Wo der Daumen landet, erscheint das Pad; Ziehen relativ zum
+  // Auflagepunkt steuert links/rechts (kleine Totzone).
+  function bindMoveZone(zone, pad, knob) {
+    if (!zone) return;
     var pid = null;
+    var originX = 0;
 
-    function setDir(clientX) {
-      var rect = pad.getBoundingClientRect();
-      var half = rect.width / 2;
-      var dx = clientX - (rect.left + half);
-      var dead = Math.max(6, half * 0.08);
+    function apply(clientX) {
+      var dx = clientX - originX;
+      var dead = 10;
       touch.left = dx < -dead;
       touch.right = dx > dead;
-      var max = half - rect.height / 2;
-      var off = Math.max(-max, Math.min(max, dx));
-      if (knob) knob.style.transform = 'translateX(' + off.toFixed(1) + 'px)';
+      if (pad && knob) {
+        var max = pad.offsetWidth / 2 - pad.offsetHeight / 2;
+        var off = Math.max(-max, Math.min(max, dx));
+        knob.style.transform = 'translateX(' + off.toFixed(1) + 'px)';
+      }
     }
 
     function reset() {
       pid = null;
       touch.left = touch.right = false;
-      pad.classList.remove('pressed');
+      if (pad) pad.classList.add('off');
       if (knob) knob.style.transform = 'translateX(0)';
     }
 
-    pad.addEventListener('pointerdown', function (e) {
+    zone.addEventListener('pointerdown', function (e) {
       e.preventDefault();
-      if (pid !== null) return; // nur ein Finger steuert das Pad
+      if (pid !== null) return; // nur ein Finger steuert das Laufen
       pid = e.pointerId;
-      try { pad.setPointerCapture(e.pointerId); } catch (err) { /* synthetische Events */ }
+      try { zone.setPointerCapture(e.pointerId); } catch (err) { /* synthetische Events */ }
       lastWasTouch = true;
       Sfx.unlock();
-      pad.classList.add('pressed');
-      setDir(e.clientX);
+      originX = e.clientX;
+      if (pad) {
+        pad.style.left = e.clientX + 'px';
+        pad.style.top = e.clientY + 'px';
+        pad.classList.remove('off');
+      }
+      apply(e.clientX);
     });
-    pad.addEventListener('pointermove', function (e) {
+    zone.addEventListener('pointermove', function (e) {
       if (e.pointerId !== pid) return;
-      setDir(e.clientX);
+      apply(e.clientX);
     });
     function release(e) {
       if (e.pointerId === pid) reset();
     }
-    pad.addEventListener('pointerup', release);
-    pad.addEventListener('pointercancel', release);
-    pad.addEventListener('lostpointercapture', release);
-    pad.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+    zone.addEventListener('pointerup', release);
+    zone.addEventListener('pointercancel', release);
+    zone.addEventListener('lostpointercapture', release);
+    zone.addEventListener('contextmenu', function (e) { e.preventDefault(); });
     window.addEventListener('blur', reset);
   }
 
-  // Touch-Buttons: Pointer Events mit Capture, damit Multi-Touch
-  // (laufen + springen gleichzeitig) zuverlässig funktioniert.
-  function bindButton(el, name) {
-    if (!el) return;
-    el.addEventListener('pointerdown', function (e) {
+  // Sprung-Zone (rechte Bildschirmhälfte): tippen = springen,
+  // halten = höher springen. Ein Ring zeigt die Tipp-Position.
+  function bindJumpZone(zone, ring) {
+    if (!zone) return;
+    var pid = null;
+
+    function reset() {
+      pid = null;
+      touch.jump = false;
+      if (ring) ring.classList.add('off');
+    }
+
+    zone.addEventListener('pointerdown', function (e) {
       e.preventDefault();
-      try { el.setPointerCapture(e.pointerId); } catch (err) { /* synthetische Events */ }
-      touch[name] = true;
+      if (pid !== null) return;
+      pid = e.pointerId;
+      try { zone.setPointerCapture(e.pointerId); } catch (err) { /* synthetische Events */ }
       lastWasTouch = true;
       Sfx.unlock();
-      if (name === 'jump') jumpPressed = true;
-      el.classList.add('pressed');
+      touch.jump = true;
+      jumpPressed = true;
+      if (ring) {
+        ring.style.left = e.clientX + 'px';
+        ring.style.top = e.clientY + 'px';
+        ring.classList.remove('off');
+      }
     });
     function release(e) {
-      touch[name] = false;
-      el.classList.remove('pressed');
+      if (e.pointerId === pid) reset();
     }
-    el.addEventListener('pointerup', release);
-    el.addEventListener('pointercancel', release);
-    el.addEventListener('lostpointercapture', release);
-    el.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+    zone.addEventListener('pointerup', release);
+    zone.addEventListener('pointercancel', release);
+    zone.addEventListener('lostpointercapture', release);
+    zone.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+    window.addEventListener('blur', reset);
   }
 
   return {
     escPressed: false,
     init: function () {
-      bindJoypad(document.getElementById('joypad'), document.getElementById('joypad-knob'));
-      bindButton(document.getElementById('btn-jump'), 'jump');
+      bindMoveZone(
+        document.getElementById('tz-left'),
+        document.getElementById('joypad'),
+        document.getElementById('joypad-knob')
+      );
+      bindJumpZone(
+        document.getElementById('tz-right'),
+        document.getElementById('jump-ring')
+      );
     },
     state: function () {
       if (override) {

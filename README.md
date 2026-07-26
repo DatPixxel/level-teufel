@@ -25,8 +25,8 @@ benötigt.
 
 | | Handy | Tastatur |
 |---|---|---|
-| Laufen | Joypad unten links (Daumen drauf, links/rechts ziehen) | Pfeiltasten oder A/D |
-| Springen | ⬆ Button unten rechts | Leertaste, W oder Pfeil hoch |
+| Laufen | Daumen irgendwo auf die **linke** Bildschirmhälfte legen – dort erscheint ein Joypad, ziehen = laufen | Pfeiltasten oder A/D |
+| Springen | **Rechte** Bildschirmhälfte tippen (halten = höher springen) | Leertaste, W oder Pfeil hoch |
 | Level neu starten | ↻ Button oben rechts | R |
 | Zur Levelauswahl | ☰ Button oben rechts | Esc |
 
