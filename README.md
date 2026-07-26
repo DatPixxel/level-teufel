@@ -13,7 +13,7 @@ keine Installation nötig.
 
 **Auf dem Handy:** Öffne einfach diese Adresse im Browser und dreh das Handy quer:
 
-> **https://datpixxel.github.io/New-Game-Style/**
+> **https://datpixxel.github.io/level-teufel/**
 
 *(Der Link wird beim ersten Workflow-Lauf automatisch aktiviert — siehe unten.)*
 
