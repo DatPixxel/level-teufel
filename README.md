@@ -14,7 +14,7 @@ keine Installation nötig.
 
 > **https://datpixxel.github.io/New-Game-Style/**
 
-*(Falls der Link noch nicht funktioniert: siehe unten „Spiel online stellen".)*
+*(Der Link wird beim ersten Workflow-Lauf automatisch aktiviert — siehe unten.)*
 
 **Auf dem PC:** Gleiche Adresse – oder das Repository herunterladen und die
 Datei `index.html` doppelklicken. Es wird kein Server und keine Installation
@@ -40,17 +40,13 @@ Tipp: Kurz tippen = kleiner Hüpfer, gedrückt halten = hoher Sprung.
 Dein Fortschritt (freigeschaltete Level, Tode) wird automatisch im Browser
 gespeichert.
 
-## 🌐 Spiel online stellen (einmalig, 1 Klick)
+## 🌐 Spiel online stellen
 
-Damit der Spiel-Link oben funktioniert, muss GitHub Pages einmal aktiviert
-werden:
-
-1. Auf GitHub in diesem Repository: **Settings → Pages** öffnen
-2. Bei **Source** die Option **„GitHub Actions"** auswählen – fertig!
-
-Sobald dieser Branch in den `main`-Branch übernommen (gemergt) wurde, baut
-GitHub das Spiel automatisch und es ist unter dem Link oben erreichbar. Danach
-gilt: Jede Änderung an `main` aktualisiert das Spiel von selbst.
+Der Workflow in `.github/workflows/deploy-pages.yml` aktiviert GitHub Pages
+beim ersten Lauf automatisch und veröffentlicht das Spiel bei jedem Push auf
+`main` (und auf den Entwicklungs-Branch). Es ist kein manueller Schritt nötig.
+Falls es doch einmal hakt: **Settings → Pages → Source: „GitHub Actions"**
+prüfen und den Workflow unter **Actions** neu starten.
 
 ## 🛠️ Technik (für Neugierige)
 

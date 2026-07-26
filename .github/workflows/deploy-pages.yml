@@ -1,10 +1,10 @@
 # Stellt das Spiel automatisch auf GitHub Pages bereit.
-# Einmalige Voraussetzung: Settings -> Pages -> Source: "GitHub Actions"
+# Aktiviert Pages beim ersten Lauf selbst (enablement: true).
 name: Spiel auf GitHub Pages veröffentlichen
 
 on:
   push:
-    branches: [main]
+    branches: [main, claude/level-devil-mobile-game-4fd0jn]
   workflow_dispatch:
 
 permissions:
@@ -25,8 +25,10 @@ jobs:
     steps:
       - name: Code auschecken
         uses: actions/checkout@v4
-      - name: Pages konfigurieren
+      - name: Pages konfigurieren (und ggf. aktivieren)
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - name: Spiel-Dateien hochladen
         uses: actions/upload-pages-artifact@v3
         with:
