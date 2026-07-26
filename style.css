@@ -34,6 +34,24 @@ html, body {
   image-rendering: auto;
 }
 
+/* Auf Touch-Geräten bekommt die Steuerung unten einen eigenen Streifen:
+   Das Spielfeld rückt nach oben, damit Daumen und Joypad nie die
+   Spielfigur verdecken (die Action spielt oft in der untersten Zeile). */
+@media (pointer: coarse) {
+  :root {
+    --ctrl-h: calc(clamp(64px, 13vmin, 92px) + max(14px, env(safe-area-inset-bottom)) + 8px);
+  }
+
+  #game-wrap {
+    padding-bottom: var(--ctrl-h);
+  }
+
+  #game {
+    width: min(100vw, calc((100vh - var(--ctrl-h)) * 960 / 544));
+    height: min(calc(100vh - var(--ctrl-h)), calc(100vw * 544 / 960));
+  }
+}
+
 .hidden { display: none !important; }
 
 /* ---------- Menü-Screens ---------- */
