@@ -7,9 +7,20 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>Level Teufel</title>
+  <title>Level Teufel – das gemeine Jump'n'Run</title>
+  <meta name="description" content="24 Level voller versteckter Fallen: Böden verschwinden, Türen fliehen, links ist plötzlich rechts. Dieses Spiel will, dass du verzweifelst. Kostenlos im Browser spielen.">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>😈</text></svg>">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <!-- Link-Vorschau (WhatsApp, Discord, X, …) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Level Teufel 😈">
+  <meta property="og:description" content="Das gemeine Jump'n'Run: 24 Level voller versteckter Fallen. Wie oft stirbst du?">
+  <meta property="og:url" content="https://datpixxel.github.io/level-teufel/">
+  <meta property="og:image" content="https://datpixxel.github.io/level-teufel/icons/icon-512.png">
+  <meta name="twitter:card" content="summary">
 </head>
 <body>
   <div id="game-wrap">
@@ -86,5 +97,14 @@
   <script src="js/levels.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/main.js"></script>
+  <script>
+    // Offline-Fähigkeit + "Zum Startbildschirm hinzufügen" (nur über http/https,
+    // beim Direktstart per file:// läuft das Spiel wie bisher ohne Service Worker)
+    if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sw.js').catch(function () { /* egal */ });
+      });
+    }
+  </script>
 </body>
 </html>
