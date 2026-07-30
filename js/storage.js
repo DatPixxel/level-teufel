@@ -7,7 +7,8 @@ var Save = (function () {
     unlocked: 1,        // höchstes freigeschaltetes Level (1-basiert)
     deaths: [],         // Tode pro Level
     totalDeaths: 0,
-    muted: false
+    muted: false,
+    lang: ''            // '' = automatisch (Browser-Sprache), sonst 'de'/'en'
   };
 
   function load() {
@@ -20,6 +21,7 @@ var Save = (function () {
           data.deaths = Array.isArray(parsed.deaths) ? parsed.deaths : [];
           data.totalDeaths = parsed.totalDeaths | 0;
           data.muted = !!parsed.muted;
+          data.lang = parsed.lang === 'de' || parsed.lang === 'en' ? parsed.lang : '';
         }
       }
     } catch (e) { /* Speichern nicht verfügbar */ }
@@ -50,6 +52,11 @@ var Save = (function () {
     persist();
   }
 
+  function setLang(l) {
+    data.lang = l === 'de' || l === 'en' ? l : '';
+    persist();
+  }
+
   function reset() {
     data.unlocked = 1;
     data.deaths = [];
@@ -63,6 +70,7 @@ var Save = (function () {
     addDeath: addDeath,
     unlock: unlock,
     setMuted: setMuted,
+    setLang: setLang,
     reset: reset,
     get: function () { return data; }
   };

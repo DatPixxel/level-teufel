@@ -1,7 +1,7 @@
 // Service Worker: macht das Spiel offline spielbar und installierbar.
 // Strategie: Netz zuerst (damit Updates sofort ankommen), Cache als
 // Fallback (damit es ohne Verbindung weiterläuft).
-var CACHE = 'level-teufel-v1';
+var CACHE = 'level-teufel-v2';
 var ASSETS = [
   './',
   'index.html',
@@ -9,6 +9,7 @@ var ASSETS = [
   'manifest.webmanifest',
   'js/config.js',
   'js/storage.js',
+  'js/i18n.js',
   'js/audio.js',
   'js/input.js',
   'js/renderer.js',

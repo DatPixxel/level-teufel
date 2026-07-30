@@ -19,6 +19,7 @@ var Game = (function () {
     ctx.setTransform(rs, 0, 0, rs, 0, 0);
 
     Save.load();
+    I18N.init();
     Renderer.init(ctx);
     Input.init();
     UI.init();
@@ -48,15 +49,7 @@ var Game = (function () {
   }
 
   // Spott bei Todes-Meilensteinen – Verzweiflung gehört zum Konzept.
-  var TAUNTS = [
-    '{n} Tode. Die Tür lacht dich aus.',
-    'Schon {n} Tode? Das Level ist 20 Sekunden lang.',
-    '{n}. Tod. Der Boden dankt für deine Treue.',
-    'Tipp: Einfach nicht sterben. ({n} Tode)',
-    '{n} Tode. Der Stachel kennt dich jetzt beim Namen.',
-    '{n} Tode. Es wird nicht leichter. Versprochen.'
-  ];
-
+  // Die Sprüche selbst stehen zweisprachig in js/i18n.js.
   function tauntMilestone(deaths) {
     return deaths === 5 || deaths === 10 || deaths === 20 || deaths === 35 ||
       (deaths >= 50 && deaths % 25 === 0);
@@ -70,7 +63,8 @@ var Game = (function () {
     UI.updateDeaths(levelIndex);
     var deaths = Save.get().deaths[levelIndex] | 0;
     if (tauntMilestone(deaths)) {
-      var msg = TAUNTS[(deaths + levelIndex) % TAUNTS.length].replace('{n}', deaths);
+      var taunts = I18N.t('taunts');
+      var msg = taunts[(deaths + levelIndex) % taunts.length].replace('{n}', deaths);
       UI.toast(msg, true);
     }
     state = 'dead';
@@ -82,7 +76,7 @@ var Game = (function () {
     Save.unlock(levelIndex + 2);
     state = 'complete';
     timer = 1.2;
-    UI.toast('Geschafft!');
+    UI.toast(I18N.t('done'));
   }
 
   function step(dt) {
@@ -108,8 +102,7 @@ var Game = (function () {
           var chapterChanged = LEVELS[levelIndex + 1].chapter !== LEVELS[levelIndex].chapter;
           loadLevel(levelIndex + 1);
           if (chapterChanged) {
-            var msgs = { 2: 'Kapitel 2 — es wird schlimmer.', 3: 'Kapitel 3 — es wird viel schlimmer.', 4: 'Kapitel 4 — willkommen in der Hölle. 😈' };
-            var m = msgs[LEVELS[levelIndex].chapter];
+            var m = I18N.t('chapterMsgs')[LEVELS[levelIndex].chapter];
             if (m) UI.toast(m, true);
           }
         }

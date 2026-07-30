@@ -1,4 +1,5 @@
-// DOM-Overlays: Titel, Levelauswahl, HUD, Sieg-Screen. Alles auf Deutsch.
+// DOM-Overlays: Titel, Levelauswahl, HUD, Sieg-Screen.
+// Alle sichtbaren Texte kommen aus js/i18n.js (Deutsch/Englisch).
 var UI = (function () {
   var els = {};
 
@@ -12,7 +13,25 @@ var UI = (function () {
   }
 
   function soundLabel() {
-    return Save.get().muted ? 'Ton: aus 🔇' : 'Ton: an 🔊';
+    return Save.get().muted ? I18N.t('soundOff') : I18N.t('soundOn');
+  }
+
+  // Statische Texte (HTML-Grundgerüst) in der aktuellen Sprache setzen.
+  function applyLanguage() {
+    document.documentElement.lang = I18N.lang();
+    document.title = I18N.t('docTitle');
+    $('title-sub').textContent = I18N.t('titleSub');
+    $('title-hint').textContent = I18N.t('hint');
+    $('btn-select').textContent = I18N.t('levelSelect');
+    $('btn-lang').textContent = I18N.t('langBtn');
+    $('levels-title').textContent = I18N.t('levelSelect');
+    $('btn-levels-back').textContent = I18N.t('back');
+    $('win-title').textContent = I18N.t('winTitle');
+    $('win-sub').textContent = I18N.t('winSub');
+    $('btn-win-title').textContent = I18N.t('backToTitle');
+    $('btn-win-reset').textContent = I18N.t('resetProgress');
+    $('btn-hud-restart').title = I18N.t('restartTitle');
+    $('btn-hud-back').title = I18N.t('backTitle');
   }
 
   function init() {
@@ -34,23 +53,31 @@ var UI = (function () {
       $('btn-sound').textContent = soundLabel();
       Sfx.click();
     });
+    $('btn-lang').addEventListener('click', function () {
+      Sfx.click();
+      I18N.toggle();
+      applyLanguage();
+      showTitle();
+    });
     $('btn-levels-back').addEventListener('click', function () { Sfx.click(); Game.gotoTitle(); });
     $('btn-hud-restart').addEventListener('click', function () { Sfx.click(); Game.restart(); });
     $('btn-hud-back').addEventListener('click', function () { Sfx.click(); Game.gotoLevels(); });
     $('btn-win-title').addEventListener('click', function () { Sfx.click(); Game.gotoTitle(); });
     $('btn-win-reset').addEventListener('click', function () {
-      if (window.confirm('Wirklich den kompletten Fortschritt löschen?')) {
+      if (window.confirm(I18N.t('confirmReset'))) {
         Save.reset();
         Game.gotoTitle();
       }
     });
+
+    applyLanguage();
   }
 
   function showTitle() {
     hideAll();
     $('btn-sound').textContent = soundLabel();
     var d = Save.get();
-    $('btn-start').textContent = d.unlocked > 1 ? 'Weiterspielen' : 'Spielen';
+    $('btn-start').textContent = d.unlocked > 1 ? I18N.t('resume') : I18N.t('play');
     els.title.classList.remove('hidden');
   }
 
@@ -58,7 +85,7 @@ var UI = (function () {
     hideAll();
     els.grid.innerHTML = '';
     var d = Save.get();
-    var chapters = { 1: 'Kapitel 1 · Willkommen', 2: 'Kapitel 2 · Vertrauen ist gut', 3: 'Kapitel 3 · Bosheit', 4: 'Kapitel 4 · Hölle' };
+    var chapters = I18N.t('chapters');
     var currentChapter = 0;
     LEVELS.forEach(function (lv, i) {
       if (lv.chapter !== currentChapter) {
@@ -86,7 +113,7 @@ var UI = (function () {
   function showGame(i) {
     hideAll();
     var lv = LEVELS[i];
-    els.hudName.textContent = (i + 1) + '. ' + lv.name;
+    els.hudName.textContent = (i + 1) + '. ' + I18N.levelName(lv);
     updateDeaths(i);
     els.hud.classList.remove('hidden');
     els.controls.classList.remove('hidden');
@@ -98,15 +125,16 @@ var UI = (function () {
   }
 
   function rankFor(deaths) {
-    if (deaths < 150) return 'Rang: Der Teufel persönlich 😈';
-    if (deaths < 350) return 'Rang: Schmerzresistent 🩹';
-    if (deaths < 700) return 'Rang: Sturkopf 🪨';
-    return 'Rang: Unsterblich — aus Übung 💀';
+    var ranks = I18N.t('ranks');
+    if (deaths < 150) return ranks[0];
+    if (deaths < 350) return ranks[1];
+    if (deaths < 700) return ranks[2];
+    return ranks[3];
   }
 
   function showWin() {
     hideAll();
-    els.winDeaths.textContent = 'Gesamte Tode: ' + Save.get().totalDeaths + ' 💀';
+    els.winDeaths.textContent = I18N.t('winDeaths') + Save.get().totalDeaths + ' 💀';
     var rankEl = document.getElementById('win-rank');
     if (rankEl) rankEl.textContent = rankFor(Save.get().totalDeaths);
     els.win.classList.remove('hidden');

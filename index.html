@@ -36,27 +36,28 @@
       </span>
     </div>
 
-    <!-- Titelbildschirm -->
+    <!-- Titelbildschirm (Texte setzt js/i18n.js in der gewählten Sprache) -->
     <div id="screen-title" class="screen">
       <h1>LEVEL<br>TEUFEL</h1>
-      <p class="subtitle">Ein gemeines kleines Spiel&nbsp;😈</p>
+      <p id="title-sub" class="subtitle">Ein gemeines kleines Spiel&nbsp;😈</p>
       <button id="btn-start" class="menu-btn">Spielen</button>
       <button id="btn-select" class="menu-btn">Levelauswahl</button>
       <button id="btn-sound" class="menu-btn small">Ton: an 🔊</button>
-      <p class="hint">Steuerung: Pfeiltasten / WASD + Leertaste · Handy: links Daumen auflegen &amp; ziehen = laufen, rechts tippen = springen</p>
+      <button id="btn-lang" class="menu-btn small">🌐 Deutsch</button>
+      <p id="title-hint" class="hint">Steuerung: Pfeiltasten / WASD + Leertaste · Handy: links Daumen auflegen &amp; ziehen = laufen, rechts tippen = springen</p>
     </div>
 
     <!-- Levelauswahl -->
     <div id="screen-levels" class="screen">
-      <h2>Levelauswahl</h2>
+      <h2 id="levels-title">Levelauswahl</h2>
       <div id="level-grid"></div>
       <button id="btn-levels-back" class="menu-btn small">Zurück</button>
     </div>
 
     <!-- Sieg-Screen -->
     <div id="screen-win" class="screen">
-      <h1>GESCHAFFT!&nbsp;🎉</h1>
-      <p class="subtitle">Du hast alle 24 Level überlebt.</p>
+      <h1 id="win-title">GESCHAFFT!&nbsp;🎉</h1>
+      <p id="win-sub" class="subtitle">Du hast alle 24 Level überlebt.</p>
       <p id="win-deaths" class="subtitle"></p>
       <p id="win-rank" class="subtitle"></p>
       <button id="btn-win-title" class="menu-btn">Zurück zum Titel</button>
@@ -81,7 +82,7 @@
     <!-- Hochformat-Hinweis -->
     <div id="rotate-overlay">
       <div>🔄</div>
-      <p>Bitte dreh dein Handy quer!</p>
+      <p id="rotate-text">Bitte dreh dein Handy quer!</p>
     </div>
   </div>
 
@@ -89,6 +90,7 @@
        damit das Spiel auch direkt von der Festplatte (file://) läuft. -->
   <script src="js/config.js"></script>
   <script src="js/storage.js"></script>
+  <script src="js/i18n.js"></script>
   <script src="js/audio.js"></script>
   <script src="js/input.js"></script>
   <script src="js/renderer.js"></script>

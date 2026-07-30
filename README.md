@@ -6,8 +6,9 @@ hoch, Türen laufen weg, Wände rücken nach und manchmal ist links plötzlich
 rechts. **Dieses Spiel will, dass du verzweifelst.** Sterben gehört dazu: Deine
 Tode werden gezählt, verspottet – und am Ende gibt es dafür einen Rang.
 
-**24 Level in 4 Kapiteln** · komplett auf Deutsch · läuft direkt im Browser,
-keine Installation nötig.
+**24 Level in 4 Kapiteln** · komplett auf **Deutsch und Englisch** (Sprache
+wird automatisch erkannt, umschaltbar über den 🌐-Button im Titel) · läuft
+direkt im Browser, keine Installation nötig.
 
 ## 🎮 Sofort spielen
 
@@ -81,6 +82,7 @@ prüfen und den Workflow unter **Actions** neu starten.
 | `js/player.js` | Spielerphysik (Coyote-Time, Jump-Buffer) |
 | `js/renderer.js` | Grafik |
 | `js/input.js` / `js/audio.js` / `js/storage.js` | Eingabe, Sound, Speicherstand |
+| `js/i18n.js` | alle Texte in Deutsch + Englisch |
 | `js/ui.js` / `js/main.js` | Menüs und Spielschleife |
 | `tools/sim.js` / `tools/bots.js` | Headless-Schaffbarkeits-Beweis (`node tools/sim.js`) |
 

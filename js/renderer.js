@@ -308,7 +308,7 @@ var Renderer = (function () {
       ctx.fillStyle = '#c9a0f0';
       ctx.font = 'bold 26px system-ui, sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('↔ Steuerung vertauscht!', CONFIG.WIDTH / 2, 46);
+      ctx.fillText(I18N.t('flipped'), CONFIG.WIDTH / 2, 46);
       ctx.textAlign = 'left';
     }
 
